@@ -14,11 +14,13 @@ app.use(bodyParser.json());
 // })
 
 //server
-console.log(process.env.DB_PASS);
+// console.log(process.env.DB_PASS);
+
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.wthiz.mongodb.net/rajdipdb?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
   const serviceCollection = client.db("rajdipdb").collection("products");
+  const reviewCollection = client.db("rajdipdb").collection("reviews");
 
   
     app.post('/addService',(req, res) =>{
@@ -38,7 +40,24 @@ client.connect(err => {
         })
     })
 
-//   client.close();
+    app.post('/addReview',(req, res) =>{
+        const newReview = req.body;
+        console.log(newReview);
+        reviewCollection.insertOne(newReview)
+        .then(result => {
+            console.log('inserted ', result.insertedCount)
+            res.send(res.insertedCount > 0)
+        })
+    })
+
+    app.get('/review',(req,res) => {
+        reviewCollection.find()
+        .toArray((err,doc)=>{
+            res.send(doc)
+        })
+    })
+
+
 });
 
 
