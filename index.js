@@ -14,7 +14,8 @@ app.use(bodyParser.json());
 // })
 
 //server
-const uri = "mongodb+srv://guitaruser:testt1234@cluster0.wthiz.mongodb.net/rajdipdb?retryWrites=true&w=majority";
+console.log(process.env.DB_PASS);
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.wthiz.mongodb.net/rajdipdb?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
   const serviceCollection = client.db("rajdipdb").collection("products");
