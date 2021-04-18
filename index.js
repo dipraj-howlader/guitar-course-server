@@ -22,6 +22,7 @@ client.connect(err => {
   const serviceCollection = client.db("rajdipdb").collection("products");
   const reviewCollection = client.db("rajdipdb").collection("reviews");
   const orderCollection = client.db("rajdipdb").collection("orders");
+  const adminCollection = client.db("rajdipdb").collection("admin");
 
   
     app.post('/addService',(req, res) =>{
@@ -76,6 +77,23 @@ client.connect(err => {
         })
     })
 
+    //send for admin
+    app.post('/addAdmin',(req, res) =>{
+        const newAdmin = req.body;
+        console.log(newAdmin);
+        adminCollection.insertOne(newAdmin)
+        .then(result => {
+            console.log('inserted ', result.insertedCount)
+            res.send(res.insertedCount > 0)
+        })
+    })
+
+    app.get('/admin',(req,res) => {
+        adminCollection.find()
+        .toArray((err,admin)=>{
+            res.send(admin)
+        })
+    })
 
 });
 
