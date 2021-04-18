@@ -21,6 +21,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 client.connect(err => {
   const serviceCollection = client.db("rajdipdb").collection("products");
   const reviewCollection = client.db("rajdipdb").collection("reviews");
+  const orderCollection = client.db("rajdipdb").collection("orders");
 
   
     app.post('/addService',(req, res) =>{
@@ -54,6 +55,24 @@ client.connect(err => {
         reviewCollection.find()
         .toArray((err,doc)=>{
             res.send(doc)
+        })
+    })
+
+    //send to orders
+    app.post('/addOrder',(req, res) =>{
+        const newOrder = req.body;
+        console.log(newOrder);
+        orderCollection.insertOne(newOrder)
+        .then(result => {
+            console.log('inserted ', result.insertedCount)
+            res.send(res.insertedCount > 0)
+        })
+    })
+
+    app.get('/orders',(req,res) => {
+        orderCollection.find()
+        .toArray((err,order)=>{
+            res.send(order)
         })
     })
 
