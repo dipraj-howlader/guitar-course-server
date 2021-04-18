@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 const MongoClient = require('mongodb').MongoClient;
+const ObjectID = require('mongodb').ObjectID;
 
 const port = 5000;
 
@@ -24,7 +25,7 @@ client.connect(err => {
   const orderCollection = client.db("rajdipdb").collection("orders");
   const adminCollection = client.db("rajdipdb").collection("admin");
 
-  
+  //service panel
     app.post('/addService',(req, res) =>{
         const newService = req.body;
         console.log(newService);
@@ -42,6 +43,15 @@ client.connect(err => {
         })
     })
 
+    app.delete('/delete/:id' , (req, res)=> {
+        serviceCollection.deleteOne({_id: ObjectID(req.params.id)})
+        .then((result) =>{
+          console.log(result);
+        })
+      })
+
+
+    //review panel
     app.post('/addReview',(req, res) =>{
         const newReview = req.body;
         console.log(newReview);
