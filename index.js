@@ -10,9 +10,9 @@ const port = 5000;
 
 app.use(cors());
 app.use(bodyParser.json());
-// app.get('/',(req,res) => {
-//     res.send('Hello Bal')
-// })
+app.get('/',(req,res) => {
+    res.send('Hello World')
+})
 
 //server
 // console.log(process.env.DB_PASS);
